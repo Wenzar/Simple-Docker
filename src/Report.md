@@ -194,12 +194,33 @@
 
 ## Part 5. **Dockle**
 
-После написания образа никогда не будет лишним проверить его на безопасность.
-
-**== Задание ==**
-
 ##### Просканировать образ из предыдущего задания через `dockle [image_id|repository]`
+
+- инструкция по установке dockle [https://github.com/goodwithtech/dockle]
+
+![](images/part5_1.png)
+
 ##### Исправить образ так, чтобы при проверке через **dockle** не было ошибок и предупреждений
+
+- ``FATAL: CIS-DI-0007`` исправляется объединением ``apt-get update' with 'apt-get install|upgradeв`` один RUN
+
+![](images/part5_2.png)
+
+- ``FATAL: DKL-DI-0005`` исправляется очисткой кэша при помощи команды ``rm -rf /var/lib/apt/lists/*``
+
+![](images/part5_3.png)
+
+- ``WARN: CIS-DI-0001`` исправляется добавлением не root юзера при помощи``useradd -m pizza`` и ``USER pizza``
+
+![](images/part5_4.png)
+
+- ``FATAL: CIS-DI-0010`` исправляется заменой ``FROM nginx`` нa ``FROM debian``, итоговый вид dockerfile:
+
+![](images/part5_5.png)
+
+- Все ошибки исправлены
+
+![](images/part5_6.png)
 
 ## Part 6. Базовый **Docker Compose**
 
