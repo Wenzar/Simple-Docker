@@ -1,16 +1,22 @@
-FROM debian
-ARG USERNAME=pizza
+FROM ubuntu/nginx
+ARG USERNAME=nginx
 
-COPY ./server.c /home/$USERNAME/server.c
-COPY ./start.sh /home/$USERNAME/start.sh
+WORKDIR /home/
 
-WORKDIR /home/$USERNAME
+COPY server.c /home/
+COPY start.sh /home/
 
-RUN useradd -m $USERNAME ; \
-    apt-get update ; \
-    apt-get install -y gcc spawn-fcgi libfcgi-dev ; \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update ; \
+    apt-get install -y gcc libfcgi-dev spawn-fcgi ; \
+    gcc server.c -lfcgi ; \
+    rm -rf /var/lib/apt/lists ; \
+    mkdir -p /var/run/nginx ; \
+    touch /var/run/nginx.pid ; \
+    chown -R $USERNAME:$USERNAME /var/run/nginx.pid ;\
+    chown -R $USERNAME:$USERNAME /var/run/nginx /var/lib/nginx /etc/nginx /var/log/nginx
 
 USER $USERNAME
 
-ENTRYPOINT ["sh", "./start.sh"]
+CMD ["sh", "/home/start.sh"]
+
+

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gcc -o server server.c -lfcgi
-spawn-fcgi -p 8080 ./server
 service nginx start
-/bin/bash
+nginx -s reload
+spawn-fcgi -p 81 ./a.out
+tail -f /dev/null

@@ -1,13 +1,18 @@
-FROM nginx
-ARG USERNAME=pizza
+FROM nginx:latest
+USER root
 
-COPY ./nginx.conf /ect/nginx/nginx.conf
+WORKDIR /home/
 
-WORKDIR /home/$USERNAME
+COPY /nginx.conf /etc/nginx/
 
-RUN useradd -m $USERNAME ; \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libfcgi-dev \
+    spawn-fcgi && rm -rf /var/lib/apt/lists ; \
+    touch /var/run/nginx.pid ; \
+    chown -R nginx:nginx /var/run/nginx.pid ;
 
-USER $USERNAME
 
-ENTRYPOINT ["sh", "./start.sh"]
+
+
+

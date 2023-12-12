@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+    nginx_server:
+      build: ./nginx/
+      container_name: nginx
+      ports:
+        - "80:8080"
+    fcgi_server: 
+      build: ./fcgi/
+      container_name: fcgi
+      ports:
+        - "8080:8080"
+        
